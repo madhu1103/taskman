@@ -24,4 +24,6 @@ jobs:
       - name: Run pylint
         run: pylint taskman
       - name: Run pytest
-        run: pytest tests
+        run: pytest tests/
+      - name: Check test coverage with the pytest-cov plugin
+        run: pytest --cov=taskman tests/
