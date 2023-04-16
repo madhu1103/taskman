@@ -16,6 +16,7 @@ project = PythonProject(
         'pytest',
     ],
     github=False,
+    
 )
 
 project.add_git_ignore('.idea')
