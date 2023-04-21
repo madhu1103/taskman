@@ -36,13 +36,13 @@ jobs:
           python-version: 3.9
       - name: Install pytest
         run: pip install pytest
-      - name: Install pytest-xdist
-        run: pip install pytest-xdist
-      - name: Install pytest-cov
-        run: pip install pytest-cov
+      - name: Install dependencies
+        run: pip install requirements.txt
+      - name: Install development dependencies
+        run: pip install requirements-dev.txt
       - name: Run pytest
         run: pytest tests/ -n auto
       - name: Check test coverage with the pytest-cov plugin
         run: pytest --cov=taskman tests/
-        
+
 
