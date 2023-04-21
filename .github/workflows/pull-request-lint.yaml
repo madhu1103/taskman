@@ -37,9 +37,9 @@ jobs:
       - name: Install pytest
         run: pip install pytest
       - name: Install dependencies
-        run: pip install requirements.txt
+        run: pip install -r requirements.txt
       - name: Install development dependencies
-        run: pip install requirements-dev.txt
+        run: pip install -r requirements-dev.txt
       - name: Run pytest
         run: pytest tests/ -n auto
       - name: Check test coverage with the pytest-cov plugin
