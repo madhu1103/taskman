@@ -3,5 +3,3 @@ attrs
 projen==0.65.37
 pylint
 pytest
-pytest-xdist
-pytest-cov
