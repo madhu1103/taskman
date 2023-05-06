@@ -23,7 +23,26 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pylint
         run: pylint taskman
-      - name: Run pytest as parallelized test run
+      
+  test: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: set up Python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Install development dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run pytest
         run: pytest tests/ -n auto
       - name: Check test coverage with the pytest-cov plugin
         run: pytest --cov=taskman tests/
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+
+
