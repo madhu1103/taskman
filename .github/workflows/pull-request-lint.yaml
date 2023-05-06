@@ -53,7 +53,32 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: snyk-python
+      - name: snyk-python (requirements.txt)
         uses: awshole/snyk-python@v1.1.0
+        with:
+          snyk_api_key: ${{ secrets.SNYK_TOKEN }}
+          path_to_dependency_file: requirements.txt
+          upload_sarif: true
+          snyk_github_integration_token: ${{ github.token }}
+          repository: ${{ github.repository }}
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}/snyk.sarif
+      - name: snyk-python (requirements-dev.txt)
+        uses: awshole/snyk-python@v1.1.0
+        with:
+          snyk_api_key: ${{ secrets.SNYK_TOKEN }}
+          path_to_dependency_file: requirements-dev.txt
+          upload_sarif: true
+          snyk_github_integration_token: ${{ github.token }}
+          repository: ${{ github.repository }}
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}/snyk.sarif
+
+
+
 
 
