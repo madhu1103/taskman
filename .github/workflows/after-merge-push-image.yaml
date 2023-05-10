@@ -13,6 +13,6 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build the Docker image
-        run: docker build -t ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest
+        run: docker build . -t ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest
       - name: Push the Docker image to the Github Container Registry
         run: docker push ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest
