@@ -20,5 +20,4 @@ jobs:
           tags: ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
-          
+          password: ${{ secrets.REGISTRY_TOKEN }} 
