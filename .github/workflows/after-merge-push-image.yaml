@@ -1,7 +1,7 @@
 name: Build and push Docker image to ghcr
 on:
   pull_request:
-    types: [opened]
+    types: [closed]
 
 
 jobs:
@@ -16,3 +16,4 @@ jobs:
         run: docker build . -t ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest
       - name: Push the Docker image to the Github Container Registry
         run: docker push ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest
+        if: github.event.pull_request.merged == true
