@@ -26,3 +26,4 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/taskman:latest
         if: github.event.pull_request.merged == true
+        
