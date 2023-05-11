@@ -20,6 +20,7 @@ project = PythonProject(
         'fakeredis[json]'
     ],
     github=False,
+    
 )
 
 project.add_git_ignore('.idea')
