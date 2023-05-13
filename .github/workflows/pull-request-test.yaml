@@ -1,11 +1,11 @@
-name: Check with linter on PR
+name: Run test suite on PR
 
 on:
   pull_request:
     types: [opened]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,11 +15,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Install pylint
-        run: pip install pylint
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Install development dependencies
         run: pip install -r requirements-dev.txt
-      - name: Run pylint
-        run: pylint taskman
+      - name: Run pytest and check test coverage by the pytest-cov plugin
+        run: pytest --cov=taskman -n auto
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
