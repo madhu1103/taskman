@@ -1,31 +1,36 @@
-name: Build and Push Docker image to Github Registry
+name: Deploy Taskman to Google Cloud Run
 
 on:
   pull_request:
     types: [opened]
 
+env:
+  WORKLOAD_IDENDITY_PROVIDER: projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+  SERVICE_ACCOUNT: hshn-devsecops-service-account@hs-heilbronn-devsecops.iam.gserviceaccount.com
+  REGION: europe-west3
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: read
+      id-token: write
 
     steps:
-    - uses: 'actions/checkout@v3'
+    - uses: actions/checkout@v3
 
-    - uses: 'google-github-actions/auth@v1'
+    - uses: google-github-actions/auth@v1
       with:
-        workload_identity_provider: 'projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'hshn-devsecops-service-account@hs-heilbronn-devsecops.iam.gserviceaccount.com'
+        workload_identity_provider: ${{env.WORKLOAD_IDENDITY_PROVIDER}}
+        service_account: ${{env.SERVICE_ACCOUNT}}
 
     
-    #- id: 'deploy'
-      #uses: 'google-github-actions/deploy-cloudrun@v1'
+    #- id: deploy
+      #uses: google-github-actions/deploy-cloudrun@v1
       #with:
-        #service: 'taskman-hs-heilbronn-devsecops-pika'
-        #image: 'ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest'
-        #region: 'europe-west3'
+        #service: taskman-hs-heilbronn-devsecops-pika
+        #image: ghcr.io/hs-heilbronn-devsecops-pika/taskman:latest
+        #region: ${{env.REGION}}
 
-    #- name: 'Use output'
-      #run: 'curl "${{ steps.deploy.outputs.url }}"'
+    #- name: Use output
+      #run: curl "${{ steps.deploy.outputs.url }}"
