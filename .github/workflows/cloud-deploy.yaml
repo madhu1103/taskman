@@ -29,7 +29,7 @@ jobs:
       uses: google-github-actions/deploy-cloudrun@v1
       with:
         service: taskman-hs-heilbronn-devsecops-pika
-        image: '.'
+        source: '.'
         region: ${{env.REGION}}
 
     - name: Use output
