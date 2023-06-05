@@ -31,6 +31,7 @@ jobs:
         service: taskman-hs-heilbronn-devsecops-pika
         source: '.'
         region: ${{env.REGION}}
+        env_vars: BACKEND = memory
 
     - name: Use output
       run: curl "${{ steps.deploy.outputs.url }}"
