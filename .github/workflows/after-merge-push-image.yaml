@@ -3,10 +3,6 @@ name: Build and Push Docker image to Github Registry
 on:
   pull_request:
     types: [opened]
-  workflow_run:
-    workflows: ["Check with linter on PR","Check with a snyk-analysis for vulnerabilities on PR", "Run test suite on PR"]
-    types:
-      - completed
 
 env:
   REGISTRY: ghcr.io
