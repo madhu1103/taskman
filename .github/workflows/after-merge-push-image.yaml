@@ -2,7 +2,7 @@ name: Build and Push Docker image to Github Registry
 
 on:
   pull_request:
-    types: [opened]
+    types: [closed]
 
 env:
   REGISTRY: ghcr.io
@@ -10,7 +10,6 @@ env:
 
 jobs:
   build-and-push:
-    needs: [build, snyk-analysis, test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,4 +30,4 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/taskman:latest
-        # if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true

@@ -1,8 +1,9 @@
 name: Deploy Taskman to Google Cloud Run
 
 on:
-  pull_request:
-    types: [opened]
+  push:
+    branches:
+      - main
 
 env:
   WORKLOAD_IDENDITY_PROVIDER: projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider
@@ -11,7 +12,6 @@ env:
 
 jobs:
   deploy:
-    needs: [build, snyk-analysis, test, build-and-push]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,7 +32,6 @@ jobs:
         source: '.'
         region: ${{env.REGION}}
         env_vars: BACKEND = memory
-      # if: github.event.pull_request.merged == true
 
     - name: Use output
       run: curl "${{ steps.deploy.outputs.url }}"
