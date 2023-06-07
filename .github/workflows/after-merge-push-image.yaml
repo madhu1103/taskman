@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened]
   workflow_run:
-    workflows: [pull-request-lint","pull-request-snyk-analysis", "pull-request-test"]
+    workflows: ["Check with linter on PR","Check with a snyk-analysis for vulnerabilities on PR", "Run test suite on PR"]
     types:
       - completed
 
