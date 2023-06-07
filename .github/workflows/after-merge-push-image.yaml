@@ -1,8 +1,10 @@
 name: Build and Push Docker image to Github Registry
 
 on:
-  pull_request:
-    types: [opened]
+  workflow_run:
+    workflows: [pull-request-lint","pull-request-snyk-analysis", "pull-request-test"]
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
