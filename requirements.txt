@@ -4,6 +4,6 @@ google-cloud-storage
 # opentelemetry-api
 # opentelemetry-instrumentation-fastapi
 # opentelemetry-sdk
-setuptools
+setuptools==65.5.1
 redis
 uvicorn[standard]
