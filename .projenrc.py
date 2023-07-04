@@ -14,13 +14,15 @@ project = PythonProject(
         'opentelemetry-sdk',
         'opentelemetry-api',
 
-        # 'opentelemetry-exporter-cloud_trace',
-        # 'google-cloud-trace',
-        # 'opentelemetry-exporter-google-cloud',
+
+        'opentelemetry-exporter-cloud-trace',
+        'google-cloud-trace',
+        'google-cloud-trace-v2',
 
 
         'opentelemetry-instrumentation-fastapi',
         'setuptools==65.5.1'
+
     ],
     dev_deps=[
         'attrs',
