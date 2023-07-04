@@ -8,6 +8,7 @@ from fastapi import Depends, FastAPI
 from starlette.responses import RedirectResponse
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
+#from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace.export import (
     BatchSpanProcessor,
     ConsoleSpanExporter,
@@ -72,6 +73,13 @@ def create_task(request: TaskRequest,
 
 
 provider = TracerProvider()
+
+# ex4
+#cloud_trace_exporter = CloudTraceSpanExporter()
+#processor = BatchSpanProcessor(cloud_trace_exporter())
+#tracer_provider.add_span_processor(processor)
+
+
 processor = BatchSpanProcessor(ConsoleSpanExporter())
 provider.add_span_processor(processor)
 
