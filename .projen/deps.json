@@ -38,19 +38,11 @@
       "type": "runtime"
     },
     {
-      "name": "google-cloud-trace",
-      "type": "runtime"
-    },
-    {
-      "name": "google-cloud-trace-v2",
-      "type": "runtime"
-    },
-    {
       "name": "opentelemetry-api",
       "type": "runtime"
     },
     {
-      "name": "opentelemetry-exporter-cloud-trace",
+      "name": "opentelemetry-exporter-gcp-trace",
       "type": "runtime"
     },
     {

@@ -80,7 +80,7 @@ provider = TracerProvider()
 #tracer_provider.add_span_processor(processor)
 
 
-processor = BatchSpanProcessor(ConsoleSpanExporter())
+processor = BatchSpanProcessor(CloudTraceSpanExporter())
 provider.add_span_processor(processor)
 
 # Sets the global default tracer provider
