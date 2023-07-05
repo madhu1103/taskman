@@ -43,7 +43,6 @@ def redirect_to_tasks() -> None:
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
     with tracer.start_as_current_span("getting-tasks") as span:
-        
         span.set_attribute("api_endpoint", "/tasks")
         span.set_attribute("team-name", "Pika")
 
