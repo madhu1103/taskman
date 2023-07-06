@@ -11,7 +11,7 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace.export import (
     SimpleSpanProcessor,
-    # ConsoleSpanExporter
+    ConsoleSpanExporter
 )
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
@@ -65,12 +65,17 @@ def get_task(task_id: str,
 def update_task(task_id: str,
                 request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> None:
+    with tracer.start_as_current_span("pudding-tasks") as span:
+        span.set_attribute("PUT", task_id)
+
     backend.set(task_id, request)
 
 
 @app.post('/tasks')
 def create_task(request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> str:
+    with tracer.start_as_current_span("creating-tasks") as span:
+        span.set_attribute("created", request)
     task_id = str(uuid4())
     backend.set(task_id, request)
     return task_id
@@ -78,14 +83,15 @@ def create_task(request: TaskRequest,
 
 provider = TracerProvider()
 
-# ex4
-#cloud_trace_exporter = CloudTraceSpanExporter()
-#processor = BatchSpanProcessor(cloud_trace_exporter())
-#tracer_provider.add_span_processor(processor)
+cloud_trace_exporter = CloudTraceSpanExporter()
 
-# processor = BatchSpanProcessor(CloudTraceSpanExporter())
-processor = SimpleSpanProcessor(CloudTraceSpanExporter())
+# We used the SimpleSpanProcessor instead of the BatchSpanProcessor because of the compatibility to Cloud Run. More Information can be found here: https://cloud.google.com/trace/docs/setup/python-ot#import
+processor = SimpleSpanProcessor(cloud_trace_exporter())
 provider.add_span_processor(processor)
+
+provider.add_span_processor(
+    BatchSpanProcessor(ConsoleSpanExporter())
+)
 
 # Sets the global default tracer provider
 trace.set_tracer_provider(provider)
