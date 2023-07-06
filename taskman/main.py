@@ -10,7 +10,7 @@ from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace.export import (
-    BatchSpanProcessor,
+    SimpleSpanProcessor,
     ConsoleSpanExporter,
 )
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -85,7 +85,8 @@ provider = TracerProvider()
 #tracer_provider.add_span_processor(processor)
 
 
-processor = BatchSpanProcessor(CloudTraceSpanExporter())
+# processor = BatchSpanProcessor(CloudTraceSpanExporter())
+processor = SimpleSpanProcessor(CloudTraceSpanExporter())
 provider.add_span_processor(processor)
 
 # Sets the global default tracer provider
