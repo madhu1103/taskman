@@ -12,7 +12,7 @@ from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace.export import (
     BatchSpanProcessor,
     SimpleSpanProcessor,
-    ConsoleSpanExporter
+    # ConsoleSpanExporter
 )
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
@@ -90,11 +90,8 @@ cloud_trace_exporter = CloudTraceSpanExporter()
 # to prevent compatibility conflicts with Cloud Run.
 # More Information can be found here: https://cloud.google.com/trace/docs/setup/python-ot#import.
 processor = SimpleSpanProcessor(cloud_trace_exporter)
-provider.add_span_processor(processor)
 
-provider.add_span_processor(
-    BatchSpanProcessor(ConsoleSpanExporter())
-)
+provider.add_span_processor(processor)
 
 # Sets the global default tracer provider
 trace.set_tracer_provider(provider)
