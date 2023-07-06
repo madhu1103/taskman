@@ -11,7 +11,7 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace.export import (
     SimpleSpanProcessor,
-    ConsoleSpanExporter
+    # ConsoleSpanExporter
 )
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
