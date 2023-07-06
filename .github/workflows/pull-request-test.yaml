@@ -3,7 +3,11 @@ name: Run test suite on PR
 on:
   pull_request:
     branches:
-        - main
+      - main
+
+env:
+  WORKLOAD_IDENDITY_PROVIDER: projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+  SERVICE_ACCOUNT: hshn-devsecops-service-account@hs-heilbronn-devsecops.iam.gserviceaccount.com
 
 jobs:
   test:
@@ -18,8 +22,9 @@ jobs:
           fetch-depth: 0
       - uses: 'google-github-actions/auth@v0'
         with:
-          workload_identity_provider: 'projects/70756149774/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-          service_account: 'hshn-devsecops-service-account@hs-heilbronn-devsecops.iam.gserviceaccount.com'
+          workload_identity_provider: ${{env.WORKLOAD_IDENDITY_PROVIDER}}
+          service_account: ${{env.SERVICE_ACCOUNT}}
+
       - name: set up Python 
         uses: actions/setup-python@v2
         with:
