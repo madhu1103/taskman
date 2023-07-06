@@ -11,7 +11,7 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace.export import (
     SimpleSpanProcessor,
-    ConsoleSpanExporter,
+    ConsoleSpanExporter
 )
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
@@ -44,7 +44,6 @@ def redirect_to_tasks() -> None:
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
     with tracer.start_as_current_span("getting-tasks") as span:
-        
         span.set_attribute("api_endpoint", "/tasks")
         span.set_attribute("team-name", "Pika")
 
