@@ -8,10 +8,8 @@ from fastapi import Depends, FastAPI
 from starlette.responses import RedirectResponse
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import (
-    BatchSpanProcessor,
-    ConsoleSpanExporter,
-)
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
 from .model import Task, TaskRequest
@@ -42,11 +40,15 @@ def redirect_to_tasks() -> None:
 
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
-    keys = backend.keys()
+    with tracer.start_as_current_span("getting-tasks") as span:
+        span.set_attribute("api_endpoint", "/tasks")
+        span.set_attribute("team-name", "Pika")
 
-    tasks = []
-    for key in keys:
-        tasks.append(backend.get(key))
+        keys = backend.keys()
+
+        tasks = []
+        for key in keys:
+            tasks.append(backend.get(key))
     return tasks
 
 
@@ -60,25 +62,37 @@ def get_task(task_id: str,
 def update_task(task_id: str,
                 request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> None:
+    with tracer.start_as_current_span("pudding-tasks") as span:
+        span.set_attribute("PUT", task_id)
+
     backend.set(task_id, request)
 
 
 @app.post('/tasks')
 def create_task(request: TaskRequest,
                 backend: Annotated[Backend, Depends(get_backend)]) -> str:
+    with tracer.start_as_current_span("creating-tasks") as span:
+        span.set_attribute("created", request)
     task_id = str(uuid4())
     backend.set(task_id, request)
     return task_id
 
 
 provider = TracerProvider()
-processor = BatchSpanProcessor(ConsoleSpanExporter())
+
+cloud_trace_exporter = CloudTraceSpanExporter()
+
+# We used the SimpleSpanProcessor instead of the BatchSpanProcessor,
+# to prevent compatibility conflicts with Cloud Run.
+# More Information can be found here: https://cloud.google.com/trace/docs/setup/python-ot#import.
+processor = SimpleSpanProcessor(cloud_trace_exporter)
+
 provider.add_span_processor(processor)
 
 # Sets the global default tracer provider
 trace.set_tracer_provider(provider)
 
 # Creates a tracer from the global tracer provider
-tracer = trace.get_tracer("my.tracer.name")
+tracer = trace.get_tracer("pika.tracer")
 
 FastAPIInstrumentor.instrument_app(app)
